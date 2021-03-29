@@ -1,0 +1,7 @@
+
+#ignore these files
+/venv/
+/hdbscan/build/
+/hdbscan/dist/
+/hdbscan/hdbscan.egg-info/
+/hdbscan/hdbscan/*.c
