@@ -177,7 +177,7 @@ cdef class UnionFind (object):
         self.size = (<np.intp_t *> self.size_arr.data)
 
     cdef void union(self, np.intp_t m, np.intp_t n):
-        print("""cdef UnionFind.union @ _hdbscan_linkage.pyx""")
+        # print("""cdef UnionFind.union @ _hdbscan_linkage.pyx""")
 
         self.size[self.next_label] = self.size[m] + self.size[n]
         self.parent[m] = self.next_label
@@ -191,11 +191,15 @@ cdef class UnionFind (object):
         print("""cdef UnionFind.fast_find @ _hdbscan_linkage.pyx""")
         cdef np.intp_t p
         p = n
+        print('inside fast find for ',n)
+        print(self.parent_arr[n])
         while self.parent_arr[n] != -1:
             n = self.parent_arr[n]
+            print(n)
         # label up to the root
         while self.parent_arr[p] != n:
             p, self.parent_arr[p] = self.parent_arr[p], n
+
         return n
 
 
@@ -205,7 +209,6 @@ cpdef np.ndarray[np.double_t, ndim=2] label(np.ndarray[np.double_t, ndim=2] L):
     print('############### DEBUG ZONE #########################')
     print('INPUT:')
     print(L)
-    print('############### DEBUG END #########################')
 
     cdef np.ndarray[np.double_t, ndim=2] result_arr
     cdef np.double_t[:, ::1] result
@@ -219,13 +222,19 @@ cpdef np.ndarray[np.double_t, ndim=2] label(np.ndarray[np.double_t, ndim=2] L):
     N = L.shape[0] + 1
     U = UnionFind(N)
 
-    for index in range(L.shape[0]):
+    for index in range(L.shape[0]): 
+        
 
         a = <np.intp_t> L[index, 0]
         b = <np.intp_t> L[index, 1]
         delta = L[index, 2]
 
+        print('index = ',index)
+        print('a = ',a)
+        print('b =',b)
+
         aa, bb = U.fast_find(a), U.fast_find(b)
+
 
         result[index][0] = aa
         result[index][1] = bb
@@ -234,6 +243,10 @@ cpdef np.ndarray[np.double_t, ndim=2] label(np.ndarray[np.double_t, ndim=2] L):
 
         U.union(aa, bb)
 
+    print('result_arr')
+    print(result_arr)
+
+    print('############### DEBUG END #########################')
     return result_arr
 
 
