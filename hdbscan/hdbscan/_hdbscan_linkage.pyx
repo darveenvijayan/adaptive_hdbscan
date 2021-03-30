@@ -202,6 +202,10 @@ cdef class UnionFind (object):
 cpdef np.ndarray[np.double_t, ndim=2] label(np.ndarray[np.double_t, ndim=2] L):
 
     print("""cpdef label @ _hdbscan_linkage.pyx""")
+    print('############### DEBUG ZONE #########################')
+    print('INPUT:')
+    print(L)
+    print('############### DEBUG END #########################')
 
     cdef np.ndarray[np.double_t, ndim=2] result_arr
     cdef np.double_t[:, ::1] result

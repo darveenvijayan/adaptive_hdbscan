@@ -85,6 +85,7 @@ cpdef np.ndarray condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
     root = 2 * hierarchy.shape[0]
     num_points = root // 2 + 1
     next_label = num_points + 1
+    # print(hierarchy)
 
     node_list = bfs_from_hierarchy(hierarchy, root)
 
@@ -163,11 +164,11 @@ cpdef np.ndarray condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
 
 cpdef dict compute_stability(np.ndarray condensed_tree):
 
-    print('********************* compute_stability *************************')
+    # print('********************* compute_stability *************************')
 
-    print('############# Input')
-    print(condensed_tree)
-    print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+    # print('############# Input')
+    # print(condensed_tree)
+    # print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
 
     cdef np.ndarray[np.double_t, ndim=1] result_arr
     cdef np.ndarray sorted_child_data
@@ -191,23 +192,27 @@ cpdef dict compute_stability(np.ndarray condensed_tree):
 
     cdef np.intp_t largest_child = condensed_tree['child'].max()
 
-    print('############# largest_child')
-    print(largest_child)
-    print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+    # print('############# condensed_tree child')
+    # print(condensed_tree['child'])
+    # print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+
+    # print('############# largest_child')
+    # print(largest_child)
+    # print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
 
 
     cdef np.intp_t smallest_cluster = condensed_tree['parent'].min()
 
-    print('############# smallest_cluster')
-    print(smallest_cluster)
-    print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+    # print('############# smallest_cluster')
+    # print(smallest_cluster)
+    # print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
 
     cdef np.intp_t num_clusters = (condensed_tree['parent'].max() -
                                    smallest_cluster + 1)
 
-    print('############# num_clusters')
-    print(num_clusters)
-    print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+    # print('############# num_clusters')
+    # print(num_clusters)
+    # print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
 
 
     if largest_child < smallest_cluster:
@@ -260,8 +265,8 @@ cpdef dict compute_stability(np.ndarray condensed_tree):
                                            condensed_tree['parent'].max() + 1),
                                  result_arr)).T
 
-    print(result_pre_dict)
-    print('**********************************************')
+    # print(result_pre_dict)
+    # print('**********************************************')
     return dict(result_pre_dict)
 
 
