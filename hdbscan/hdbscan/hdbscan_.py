@@ -45,6 +45,19 @@ FAST_METRICS = (KDTree.valid_metrics + BallTree.valid_metrics +
 # License: BSD 3 clause
 from numpy import isclose
 
+# debug template
+# debug = False
+# if debug ==True:
+#     print('############### DEBUG ZONE #########################')
+#     print('TOPIC')
+
+#     print('INPUT:')
+
+#     print('OUTPUT:')
+
+#     print('############### DEBUG END #########################')
+#     debug = False
+
 def _tree_to_labels(X, single_linkage_tree, min_cluster_size=10,
                     cluster_selection_method='eom',
                     allow_single_cluster=False,
@@ -53,10 +66,8 @@ def _tree_to_labels(X, single_linkage_tree, min_cluster_size=10,
     """Converts a pretrained tree and cluster size into a
     set of labels and probabilities.
     """
-    # print('############### DEBUG ZONE #########################')
-    # print('INPUT:')
-    # print(single_linkage_tree)
-    # print("""def _tree_to_labels @ hdbscan_.py""")
+
+        # print("""def _tree_to_labels @ hdbscan_.py""")
     condensed_tree = condense_tree(single_linkage_tree,
                                    min_cluster_size)
     stability_dict = compute_stability(condensed_tree)
@@ -66,19 +77,41 @@ def _tree_to_labels(X, single_linkage_tree, min_cluster_size=10,
                                                       allow_single_cluster,
                                                       match_reference_implementation,
 													  cluster_selection_epsilon)
-    # print('OUTPUT:')
-    # print('labels')
-    # print(labels)
-    # print('probabilities')
-    # print(probabilities)
-    # print('stabilities')
-    # print(stabilities)
-    # print('condensed_tree')
-    # print(condensed_tree)
-    # print('single_linkage_tree')
-    # print(single_linkage_tree)
+    debug = False
+    if debug ==True:
+        print('############### DEBUG ZONE #########################')
+        print('CONDENSE TREE')
+        print('INPUT:')
+        print(single_linkage_tree)
+        print('min_cluster_size')
+        print(min_cluster_size)
+        print('OUTPUT:')
+        print('labels')
+        print(labels)
+        print('probabilities')
+        print(probabilities)
+        print('stabilities')
+        print(stabilities)
+        print('condensed_tree')
+        print(condensed_tree)
+        print('single_linkage_tree')
+        print(single_linkage_tree)
+        print('############### DEBUG END #########################')
+        debug = False
 
-    # print('############### DEBUG END #########################')
+    debug = False
+    if debug ==True:
+        print('############### DEBUG ZONE #########################')
+        print('COMPUTE STABILITY')
+        print('INPUT:')
+        print('condensed_tree')
+        print(condensed_tree)
+
+        print('OUTPUT:')
+        print('stability_dict')
+        print(stability_dict)
+        print('############### DEBUG END #########################')
+        debug = False
 
     return (labels, probabilities, stabilities, condensed_tree,
             single_linkage_tree)
@@ -205,7 +238,9 @@ def _hdbscan_sparse_distance_matrix(X, min_samples=5, alpha=1.0,
 def _hdbscan_prims_kdtree(X, min_samples=5, alpha=1.0,
                           metric='minkowski', p=2, leaf_size=40,
                           gen_min_span_tree=False, **kwargs):
-    print("""def _hdbscan_prims_kdtree @ hdbscan_.py""")
+    debug=False
+    if debug == True:
+        print("""def _hdbscan_prims_kdtree @ hdbscan_.py""")
     if X.dtype != np.float64:
         X = X.astype(np.float64)
 
@@ -363,7 +398,9 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0, cluster_selectio
             core_dist_n_jobs=4,
             cluster_selection_method='eom', allow_single_cluster=False,
             match_reference_implementation=False, **kwargs):
-    print("""def hdbscan @ hdbscan_.py""")
+    debug=False
+    if debug == True:
+        print("""def hdbscan @ hdbscan_.py""")
 
     """Perform HDBSCAN clustering from a vector array or distance matrix.
 
@@ -632,16 +669,16 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0, cluster_selectio
         elif metric in KDTree.valid_metrics:
             # TO DO: Need heuristic to decide when to go to boruvka;
             # still debugging for now
-            hello =5 #remove this line
-            if hello > 1: #remove this line
+            force_prim = True #remove this line
+            if force_prim == True: #remove this line
             # if X.shape[1] > 60: #uncomment this line
-                print('prim')
+                # print('prim')
                 (single_linkage_tree, result_min_span_tree) = memory.cache(
                     _hdbscan_prims_kdtree)(X, min_samples, alpha,
                                            metric, p, leaf_size,
                                            gen_min_span_tree, **kwargs)
             else:
-                print('boruvka')
+                # print('boruvka')
                 (single_linkage_tree, result_min_span_tree) = memory.cache(
                     _hdbscan_boruvka_kdtree)(X, min_samples, alpha,
                                              metric, p, leaf_size,
@@ -942,7 +979,9 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         self : object
             Returns self
         """
-        print("""def HDBSCAN.fit @ hdbscan_.py""")
+        debug=False
+        if debug == True:
+            print("""def HDBSCAN.fit @ hdbscan_.py""")
 
         if self.metric != 'precomputed':
             X = check_array(X, accept_sparse='csr')

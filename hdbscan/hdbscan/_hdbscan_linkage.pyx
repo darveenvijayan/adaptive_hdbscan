@@ -58,7 +58,7 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_vector(
         np.ndarray[np.double_t, ndim=1, mode='c'] core_distances,
         DistanceMetric dist_metric,
         np.double_t alpha=1.0):
-    print("""cpdef mst_linkage_core_vector @ _hdbscan_linkage.pyx""")
+    # print("""cpdef mst_linkage_core_vector @ _hdbscan_linkage.pyx""")
     # Add a comment
     cdef np.ndarray[np.double_t, ndim=1] current_distances_arr
     cdef np.ndarray[np.int8_t, ndim=1] in_tree_arr
@@ -188,14 +188,16 @@ cdef class UnionFind (object):
         return
 
     cdef np.intp_t fast_find(self, np.intp_t n):
-        print("""cdef UnionFind.fast_find @ _hdbscan_linkage.pyx""")
+        
         cdef np.intp_t p
         p = n
-        print('inside fast find for ',n)
-        print(self.parent_arr[n])
+        debug=False
+        if debug == True:
+            print("""cdef UnionFind.fast_find @ _hdbscan_linkage.pyx""")
+            print('inside fast find for ',n)
+            print(self.parent_arr[n])
         while self.parent_arr[n] != -1:
             n = self.parent_arr[n]
-            print(n)
         # label up to the root
         while self.parent_arr[p] != n:
             p, self.parent_arr[p] = self.parent_arr[p], n
@@ -205,10 +207,12 @@ cdef class UnionFind (object):
 
 cpdef np.ndarray[np.double_t, ndim=2] label(np.ndarray[np.double_t, ndim=2] L):
 
-    print("""cpdef label @ _hdbscan_linkage.pyx""")
-    print('############### DEBUG ZONE #########################')
-    print('INPUT:')
-    print(L)
+    debug=False
+    if debug == True:
+        print("""cpdef label @ _hdbscan_linkage.pyx""")
+        print('############### DEBUG ZONE #########################')
+        print('INPUT:')
+        print(L)
 
     cdef np.ndarray[np.double_t, ndim=2] result_arr
     cdef np.double_t[:, ::1] result
@@ -228,10 +232,10 @@ cpdef np.ndarray[np.double_t, ndim=2] label(np.ndarray[np.double_t, ndim=2] L):
         a = <np.intp_t> L[index, 0]
         b = <np.intp_t> L[index, 1]
         delta = L[index, 2]
-
-        print('index = ',index)
-        print('a = ',a)
-        print('b =',b)
+        if debug == True:
+            print('index = ',index)
+            print('a = ',a)
+            print('b =',b)
 
         aa, bb = U.fast_find(a), U.fast_find(b)
 
@@ -242,11 +246,10 @@ cpdef np.ndarray[np.double_t, ndim=2] label(np.ndarray[np.double_t, ndim=2] L):
         result[index][3] = U.size[aa] + U.size[bb]
 
         U.union(aa, bb)
-
-    print('result_arr')
-    print(result_arr)
-
-    print('############### DEBUG END #########################')
+    if debug == True:
+        print('result_arr')
+        print(result_arr)
+        print('############### DEBUG END #########################')
     return result_arr
 
 

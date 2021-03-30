@@ -164,12 +164,6 @@ cpdef np.ndarray condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
 
 cpdef dict compute_stability(np.ndarray condensed_tree):
 
-    # print('********************* compute_stability *************************')
-
-    # print('############# Input')
-    # print(condensed_tree)
-    # print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
-
     cdef np.ndarray[np.double_t, ndim=1] result_arr
     cdef np.ndarray sorted_child_data
     cdef np.ndarray[np.intp_t, ndim=1] sorted_children
@@ -192,27 +186,32 @@ cpdef dict compute_stability(np.ndarray condensed_tree):
 
     cdef np.intp_t largest_child = condensed_tree['child'].max()
 
-    # print('############# condensed_tree child')
-    # print(condensed_tree['child'])
-    # print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
-
-    # print('############# largest_child')
-    # print(largest_child)
-    # print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
-
-
     cdef np.intp_t smallest_cluster = condensed_tree['parent'].min()
-
-    # print('############# smallest_cluster')
-    # print(smallest_cluster)
-    # print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
 
     cdef np.intp_t num_clusters = (condensed_tree['parent'].max() -
                                    smallest_cluster + 1)
 
-    # print('############# num_clusters')
-    # print(num_clusters)
-    # print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+    debug = True
+    if debug ==True:
+        print('############### DEBUG ZONE #########################')
+        print('COMPUTE STABILITY')
+
+        print('INPUT:')
+        print('condensed_tree')
+        print(condensed_tree)
+
+        print('OUTPUT:')
+        print('largest_child')
+        print(condensed_tree['child'])
+        print(largest_child)
+
+        print('smallest_cluster')
+        print(condensed_tree['parent'])
+        print(smallest_cluster)
+
+
+        print('############### DEBUG END #########################')
+        debug = False
 
 
     if largest_child < smallest_cluster:
