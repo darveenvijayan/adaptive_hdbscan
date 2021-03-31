@@ -190,7 +190,6 @@ cpdef dict compute_stability(np.ndarray condensed_tree):
 
     cdef np.intp_t num_clusters = (condensed_tree['parent'].max() -
                                    smallest_cluster + 1)
-
     debug = True
     if debug ==True:
         print('############### DEBUG ZONE #########################')
@@ -200,22 +199,17 @@ cpdef dict compute_stability(np.ndarray condensed_tree):
         print('condensed_tree')
         print(condensed_tree)
 
-        print('OUTPUT:')
-        print('largest_child')
-        print(condensed_tree['child'])
-        print(largest_child)
-
-        print('smallest_cluster')
-        print(condensed_tree['parent'])
-        print(smallest_cluster)
-
-
-        print('############### DEBUG END #########################')
-        debug = False
-
-
     if largest_child < smallest_cluster:
         largest_child = smallest_cluster
+
+    print('largest_child')
+    print(condensed_tree['child'])
+    print(largest_child)
+
+    print('smallest_cluster')
+    print(condensed_tree['parent'])
+    print(smallest_cluster)
+
 
     sorted_child_data = np.sort(condensed_tree[['child', 'lambda_val']],
                                 axis=0)
@@ -264,8 +258,20 @@ cpdef dict compute_stability(np.ndarray condensed_tree):
                                            condensed_tree['parent'].max() + 1),
                                  result_arr)).T
 
-    # print(result_pre_dict)
-    # print('**********************************************')
+
+
+
+
+    print('OUTPUT:')
+    print(result_pre_dict)
+
+
+
+    print('############### DEBUG END #########################')
+    debug = False
+
+
+
     return dict(result_pre_dict)
 
 
