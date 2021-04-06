@@ -82,12 +82,25 @@ cpdef np.ndarray condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
     cdef np.intp_t left_count
     cdef np.intp_t right_count
 
+    debug = True
+    if debug ==True:
+        print('############### DEBUG ZONE #########################')
+        print('CONDENSE TREE')
+
+        print('INPUT:')
+        print('hierarchy')
+        print(hierarchy)
+
     root = 2 * hierarchy.shape[0]
     num_points = root // 2 + 1
     next_label = num_points + 1
-    # print(hierarchy)
+    
 
     node_list = bfs_from_hierarchy(hierarchy, root)
+
+    if debug ==True:
+        print('node_list')
+        print(node_list)
 
     relabel = np.empty(root + 1, dtype=np.intp)
     relabel[root] = num_points
@@ -156,6 +169,10 @@ cpdef np.ndarray condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
                                         lambda_value, 1))
                 ignore[sub_node] = True
 
+    if debug ==True:
+        print('result_list')
+        print(result_list)  
+
     return np.array(result_list, dtype=[('parent', np.intp),
                                         ('child', np.intp),
                                         ('lambda_val', float),
@@ -190,7 +207,7 @@ cpdef dict compute_stability(np.ndarray condensed_tree):
 
     cdef np.intp_t num_clusters = (condensed_tree['parent'].max() -
                                    smallest_cluster + 1)
-    debug = True
+    debug = False
     if debug ==True:
         print('############### DEBUG ZONE #########################')
         print('COMPUTE STABILITY')
