@@ -171,7 +171,8 @@ cpdef np.ndarray condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
 
     if debug ==True:
         print('result_list')
-        print(result_list)  
+        for i in range(len(result_list)):
+            print(result_list[i])  
 
     return np.array(result_list, dtype=[('parent', np.intp),
                                         ('child', np.intp),
