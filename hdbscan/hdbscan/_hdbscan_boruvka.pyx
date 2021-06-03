@@ -92,8 +92,8 @@ cdef inline np.double_t balltree_min_dist_dual(
     np.intp_t node1,
     np.intp_t node2,
     np.double_t[:, ::1] centroid_dist) nogil except -1:
-    with gil:
-        print("""cdef balltree_min_dist_dual @ _hdbscan_boruvka.pyx""")
+    # with gil:
+    #     print("""cdef balltree_min_dist_dual @ _hdbscan_boruvka.pyx""")
     cdef np.double_t dist_pt = centroid_dist[node1, node2]
     return max(0, (dist_pt - radius1 - radius2))
 
@@ -211,7 +211,7 @@ cdef class BoruvkaUnionFind (object):
 
     cdef int union_(self, np.intp_t x, np.intp_t y) except -1:
 
-        print("""cdef BoruvkaUnionFind.union_ @ _hdbscan_boruvka.pyx""")
+        # print("""cdef BoruvkaUnionFind.union_ @ _hdbscan_boruvka.pyx""")
 
         """Union together elements x and y"""
         cdef np.intp_t x_root = self.find(x)
@@ -235,7 +235,7 @@ cdef class BoruvkaUnionFind (object):
 
     cdef np.intp_t find(self, np.intp_t x) except -1:
 
-        print("""cdef BoruvkaUnionFind.find @ _hdbscan_boruvka.pyx""")
+        # print("""cdef BoruvkaUnionFind.find @ _hdbscan_boruvka.pyx""")
 
         """Find the root or identifier for the component that x is in"""
         cdef np.intp_t x_parent
@@ -252,7 +252,7 @@ cdef class BoruvkaUnionFind (object):
 
     cdef np.ndarray[np.intp_t, ndim=1] components(self):
 
-        print("""cdef BoruvkaUnionFind.components @ _hdbscan_boruvka.pyx""")
+        # print("""cdef BoruvkaUnionFind.components @ _hdbscan_boruvka.pyx""")
 
         """Return an array of all component roots/identifiers"""
         return self.is_component.nonzero()[0]
@@ -260,7 +260,7 @@ cdef class BoruvkaUnionFind (object):
 
 def _core_dist_query(tree, data, min_samples):
 
-    print("""def _core_dist_query @ _hdbscan_boruvka.pyx""")
+    # print("""def _core_dist_query @ _hdbscan_boruvka.pyx""")
 
     return tree.query(data, k=min_samples, dualtree=True, breadth_first=True)
 
@@ -435,7 +435,7 @@ cdef class KDTreeBoruvkaAlgorithm (object):
         # (most systems) this amounts to a 2x-3x wall clock improvement.
         if self.tree.data.shape[0] > 16384 and self.n_jobs > 1:
 
-            print("""cdef KDTreeBoruvkaAlgorithm._compute_bounds @ _hdbscan_boruvka.pyx""")
+            # print("""cdef KDTreeBoruvkaAlgorithm._compute_bounds @ _hdbscan_boruvka.pyx""")
             split_cnt = self.num_points // self.n_jobs
             datasets = []
             for i in range(self.n_jobs):
@@ -494,7 +494,7 @@ cdef class KDTreeBoruvkaAlgorithm (object):
 
         cdef np.intp_t n
 
-        print("""cdef KDTreeBoruvkaAlgorithm._initialize_components @ _hdbscan_boruvka.pyx""")
+        # print("""cdef KDTreeBoruvkaAlgorithm._initialize_components @ _hdbscan_boruvka.pyx""")
         for n in range(self.num_points):
             self.component_of_point[n] = n
             self.candidate_neighbor[n] = -1
@@ -535,7 +535,7 @@ cdef class KDTreeBoruvkaAlgorithm (object):
         # We will go through and and an edge to the edge list
         # for each of these, and the union the two points
         # together in the union find structure
-        print("""cdef KDTreeBoruvkaAlgorithm.update_components @ _hdbscan_boruvka.pyx""")
+        # print("""cdef KDTreeBoruvkaAlgorithm.update_components @ _hdbscan_boruvka.pyx""")
         for c in range(self.components.shape[0]):
             component = self.components[c]
             source = self.candidate_point[component]
@@ -629,8 +629,8 @@ cdef class KDTreeBoruvkaAlgorithm (object):
         This is akin to a standard dual tree NN search, but we also prune
         whenever all points in query and reference nodes are in the same
         component."""
-        with gil:
-            print("cdef KDTreeBoruvkaAlgorithm.dual_tree_traversal @ _hdbscan_boruvka.pyx")
+        # with gil:
+            # print("cdef KDTreeBoruvkaAlgorithm.dual_tree_traversal @ _hdbscan_boruvka.pyx")
         cdef np.intp_t[::1] point_indices1, point_indices2
 
         cdef np.intp_t i
@@ -864,7 +864,7 @@ cdef class KDTreeBoruvkaAlgorithm (object):
 
     def spanning_tree(self):
 
-        print("""def KDTreeBoruvkaAlgorithm.spanning_tree @ _hdbscan_boruvka.pyx""")
+        # print("""def KDTreeBoruvkaAlgorithm.spanning_tree @ _hdbscan_boruvka.pyx""")
 
         """Compute the minimum spanning tree of the data held by
         the tree passed in at construction"""

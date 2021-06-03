@@ -40,11 +40,13 @@ def mutual_reachability(distance_matrix, min_points=5, alpha=1.0):
        (pp. 160-172). Springer Berlin Heidelberg.
     """
     size = distance_matrix.shape[0]
+    print(size)
     min_points = min(size - 1, min_points)
     try:
         core_distances = np.partition(distance_matrix,
                                       min_points,
                                       axis=0)[min_points]
+        print(core_distances)
     except AttributeError:
         core_distances = np.sort(distance_matrix,
                                  axis=0)[min_points]
@@ -80,7 +82,7 @@ cpdef sparse_mutual_reachability(object lil_matrix, np.intp_t min_points=5,
             core_distance[i] = sorted_row_data[min_points]
         else:
             core_distance[i] = np.infty
-
+    print('here')
     if alpha != 1.0:
         lil_matrix = lil_matrix / alpha
 

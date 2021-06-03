@@ -5,7 +5,7 @@ HDBSCAN: Hierarchical Density-Based Spatial Clustering
 """
 
 import numpy as np
-
+import time
 from sklearn.base import BaseEstimator, ClusterMixin
 from sklearn.metrics import pairwise_distances
 from scipy.sparse import issparse
@@ -94,8 +94,6 @@ def _tree_to_labels(X, single_linkage_tree, min_cluster_size=10,
         print(stabilities)
         print('condensed_tree')
         print(condensed_tree)
-        print('single_linkage_tree')
-        print(single_linkage_tree)
         print('############### DEBUG END #########################')
         debug = False
 
@@ -318,7 +316,7 @@ def _hdbscan_boruvka_kdtree(X, min_samples=5, alpha=1.0,
                             approx_min_span_tree=True,
                             gen_min_span_tree=False,
                             core_dist_n_jobs=4, **kwargs):
-    print("""def _hdbscan_boruvka_kdtree @ hdbscan_.py""")
+    # print("""def _hdbscan_boruvka_kdtree @ hdbscan_.py""")
 
     if leaf_size < 3:
         leaf_size = 3
@@ -398,9 +396,9 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0, cluster_selectio
             core_dist_n_jobs=4,
             cluster_selection_method='eom', allow_single_cluster=False,
             match_reference_implementation=False, **kwargs):
-    debug=False
-    if debug == True:
-        print("""def hdbscan @ hdbscan_.py""")
+    # debug=False
+    # if debug == True:
+        # print("""def hdbscan @ hdbscan_.py""")
 
     """Perform HDBSCAN clustering from a vector array or distance matrix.
 
@@ -669,16 +667,21 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0, cluster_selectio
         elif metric in KDTree.valid_metrics:
             # TO DO: Need heuristic to decide when to go to boruvka;
             # still debugging for now
-            force_prim = True #remove this line
-            if force_prim == True: #remove this line
+            algo = 'prim' #remove this line
+            # algo = 'boruvka' #remove this line
+            if algo == 'prim': #remove this line
             # if X.shape[1] > 60: #uncomment this line
-                # print('prim')
+                print('prim')
+                # s = time.time()
                 (single_linkage_tree, result_min_span_tree) = memory.cache(
                     _hdbscan_prims_kdtree)(X, min_samples, alpha,
                                            metric, p, leaf_size,
                                            gen_min_span_tree, **kwargs)
+                # e = time.time()
+                # print((e - s)*1000,'ms')
+                # print((e - s),'s')
             else:
-                # print('boruvka')
+                print('boruvka')
                 (single_linkage_tree, result_min_span_tree) = memory.cache(
                     _hdbscan_boruvka_kdtree)(X, min_samples, alpha,
                                              metric, p, leaf_size,

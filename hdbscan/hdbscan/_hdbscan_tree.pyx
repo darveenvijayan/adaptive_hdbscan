@@ -6,6 +6,7 @@
 # License: 3-clause BSD
 
 import numpy as np
+import time
 cimport numpy as np
 
 cdef np.double_t INFTY = np.inf
@@ -82,7 +83,7 @@ cpdef np.ndarray condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
     cdef np.intp_t left_count
     cdef np.intp_t right_count
 
-    debug = True
+    debug = False
     if debug ==True:
         print('############### DEBUG ZONE #########################')
         print('CONDENSE TREE')
@@ -90,6 +91,7 @@ cpdef np.ndarray condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
         print('INPUT:')
         print('hierarchy')
         print(hierarchy)
+        s = time.time()
 
     root = 2 * hierarchy.shape[0]
     num_points = root // 2 + 1
@@ -98,20 +100,42 @@ cpdef np.ndarray condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
 
     node_list = bfs_from_hierarchy(hierarchy, root)
 
+
     if debug ==True:
-        print('node_list')
-        print(node_list)
+        pass
+
+        # print('node_list',node_list)
+        # print('root',root)
+        # print('num_points', num_points)
+        # print('next_label',next_label)
 
     relabel = np.empty(root + 1, dtype=np.intp)
+    # print(relabel)
     relabel[root] = num_points
+    # print(relabel)
+
     result_list = []
     ignore = np.zeros(len(node_list), dtype=np.int)
-
+    # print(ignore)
+    count=0
+    # print('Looooooooooooop Startttttttttttttttttttttttt')
     for node in node_list:
+        # print('node',node)
+        # print('+++')
+        # print('ignore',ignore)
+        # print('===')
+
+        # print('ignore[node]',ignore[node])
         if ignore[node] or node < num_points:
+            # print('inside - ignore[node]',ignore[node])
             continue
 
         children = hierarchy[node - num_points]
+        # print('children_after',children)
+        count+=1
+
+
+
         left = <np.intp_t> children[0]
         right = <np.intp_t> children[1]
         if children[2] > 0.0:
@@ -169,10 +193,17 @@ cpdef np.ndarray condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
                                         lambda_value, 1))
                 ignore[sub_node] = True
 
+        # print('Looooooooooooop Enddddddddddddddddddddddddddddd')
+
     if debug ==True:
         print('result_list')
         for i in range(len(result_list)):
             print(result_list[i])  
+        print('count',count)
+
+        e = time.time()
+        print((e - s)*1000,'ms')
+        print((e - s),'s')
 
     return np.array(result_list, dtype=[('parent', np.intp),
                                         ('child', np.intp),
