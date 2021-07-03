@@ -6,3 +6,4 @@
 /hdbscan/hdbscan.egg-info/
 /hdbscan/hdbscan/*.c
 /hdbscan/hdbscan/*.ipynb_checkpoints
+/.ipynb_checkpoints
