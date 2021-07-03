@@ -691,7 +691,8 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0, cluster_selectio
         else:  # Metric is a valid BallTree metric
             # TO DO: Need heuristic to decide when to go to boruvka;
             # still debugging for now
-            if X.shape[1] > 60:
+            # if X.shape[1] > 60:
+            if algo == 'prim': #remove this line
                 (single_linkage_tree, result_min_span_tree) = memory.cache(
                     _hdbscan_prims_balltree)(X, min_samples, alpha,
                                              metric, p, leaf_size,
