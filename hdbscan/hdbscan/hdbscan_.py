@@ -389,7 +389,7 @@ def check_precomputed_distance_matrix(X):
     check_array(tmp)
 
 
-def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0, cluster_selection_epsilon=0.0,
+def hdbscan(X, algo, min_cluster_size=5, min_samples=None, alpha=1.0, cluster_selection_epsilon=0.0,
             metric='minkowski', p=2, leaf_size=40,
             algorithm='best', memory=Memory(cachedir=None, verbose=0),
             approx_min_span_tree=True, gen_min_span_tree=False,
@@ -667,7 +667,7 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0, cluster_selectio
         elif metric in KDTree.valid_metrics:
             # TO DO: Need heuristic to decide when to go to boruvka;
             # still debugging for now
-            algo = 'prim' #remove this line
+            # algo = 'prim' #remove this line
             # algo = 'boruvka' #remove this line
             if algo == 'prim': #remove this line
             # if X.shape[1] > 60: #uncomment this line
@@ -677,6 +677,9 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0, cluster_selectio
                     _hdbscan_prims_kdtree)(X, min_samples, alpha,
                                            metric, p, leaf_size,
                                            gen_min_span_tree, **kwargs)
+                # print(single_linkage_tree.shape)
+                # print('****')
+                # print(result_min_span_tree)
                 # e = time.time()
                 # print((e - s)*1000,'ms')
                 # print((e - s),'s')
@@ -967,7 +970,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         self._prediction_data = None
         self._relative_validity = None
 
-    def fit(self, X, y=None):
+    def fit(self, X, algo, y=None):
         """Perform HDBSCAN clustering from features or distance matrix.
 
         Parameters
@@ -1008,7 +1011,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
          self.cluster_persistence_,
          self._condensed_tree,
          self._single_linkage_tree,
-         self._min_spanning_tree) = hdbscan(X, **kwargs)
+         self._min_spanning_tree) = hdbscan(X, algo, **kwargs)
 
         if self.prediction_data:
             self.generate_prediction_data()
