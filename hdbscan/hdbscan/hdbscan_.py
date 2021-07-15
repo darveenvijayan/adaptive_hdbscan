@@ -671,7 +671,7 @@ def hdbscan(X, algo, min_cluster_size=5, min_samples=None, alpha=1.0, cluster_se
             # algo = 'boruvka' #remove this line
             if algo == 'prim': #remove this line
             # if X.shape[1] > 60: #uncomment this line
-                print('prim')
+                # print('prim')
                 # s = time.time()
                 (single_linkage_tree, result_min_span_tree) = memory.cache(
                     _hdbscan_prims_kdtree)(X, min_samples, alpha,
@@ -684,7 +684,7 @@ def hdbscan(X, algo, min_cluster_size=5, min_samples=None, alpha=1.0, cluster_se
                 # print((e - s)*1000,'ms')
                 # print((e - s),'s')
             else:
-                print('boruvka')
+                # print('boruvka')
                 (single_linkage_tree, result_min_span_tree) = memory.cache(
                     _hdbscan_boruvka_kdtree)(X, min_samples, alpha,
                                              metric, p, leaf_size,
