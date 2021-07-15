@@ -19,8 +19,8 @@
 
 source venv/bin/activate
 
-cd hdbscan
-python my_setup.py install
+# cd hdbscan
+# python my_setup.py install
 
-cd ..
+# cd ..
 python hdbscan_babysit.py
