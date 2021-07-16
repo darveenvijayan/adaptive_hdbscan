@@ -23,9 +23,9 @@ def prim():
         total_time+= time.time()-start_time
         total_mem += resource.getrusage(resource.RUSAGE_SELF).ru_maxrss/1024.0/1024.0
 
-    print('total iteration : ', i)
-    print('Memory used : ', total_mem/i,'kB')
-    print('Total time taken : ',total_time/i,'seconds')
+    print('total iteration : ', i+1)
+    print('Memory used : ', total_mem/(i+1),'kB')
+    print('Total time taken : ',total_time/(i+1),'seconds')
 
 
 def boruvka():
@@ -46,8 +46,8 @@ def boruvka():
         total_mem += resource.getrusage(resource.RUSAGE_SELF).ru_maxrss/1024.0/1024.0
 
     print('total iteration : ', i+1)
-    print('Memory used : ', total_mem/i+1,'kB')
-    print('Total time taken : ',total_time/i+1,'seconds')
+    print('Memory used : ', total_mem/(i+1),'kB')
+    print('Total time taken : ',total_time/(i+1),'seconds')
 
 if __name__=="__main__":
 
